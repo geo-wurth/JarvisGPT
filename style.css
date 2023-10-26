@@ -8,8 +8,8 @@
 
 body {
     font-family: 'Inter', sans-serif;
-    background-color: #272727;
-    color: white;
+    background-color: white;
+    color: #272727;
 }
 
 h1 {
@@ -24,6 +24,18 @@ h1 {
     left: 0;
 }
 
+button.theme {
+    padding: 12px 13px;
+    border-radius: 50%;
+    border: none;
+    background-color: #272727;
+    color: white;
+    position: absolute;
+    right: 50px;
+    top: 20px;
+    cursor: pointer;
+}
+
 .container {
     display: flex;
     flex-direction: column;
@@ -36,7 +48,7 @@ h1 {
     margin: 60px 0;
 }
 
-button {
+button#microfone {
     padding: 12px 15px;
     border-radius: 50%;
     border: none;
@@ -45,15 +57,41 @@ button {
     cursor: pointer;
 }
 
+button.active {
+    background-color: #791927 !important;
+    color: gray !important;
+}
+
 input {
     min-width: 300px;
     padding: 12px 15px;
     border: none;
-    border-bottom: 1px solid white;
-    color: white;
-    background-color: #272727;
+    border-bottom: 1px solid #272727;
+    color: #272727;
+    background-color: white;
 }
 
 input:focus {
     outline: none;
 }
+
+#resposta {
+    font-size: larger;
+    font-weight: bold;
+    margin: 0 100px;
+}
+
+.dark {
+    background-color: #272727;
+    color: white;
+}
+
+input.dark {
+    border-bottom: 1px solid white;
+}
+
+button.dark {
+    background-color: white;
+    color: #272727;
+}
+

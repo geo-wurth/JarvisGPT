@@ -12,16 +12,25 @@
 </head>
 <body>
     <div class="sideBar"></div>
+    <button class="theme">
+        <i class="fa fa-moon"></i>
+    </button>
     <div class="container">
         <img src="./img/RoboLQ.png" alt="Jarvis">
         <h1>Jarvis GPT</h1>
 
         <div>
             <input type="text" name="" placeholder="Pergunte algo...">
-            <button><i class="fa fa-microphone"></i></button>
+            <button id="microfone">
+                <i class="fa fa-microphone"></i>
+            </button>
         </div>
 
         <img src="./img/senai_logo.png" alt="Logo SENAI">
+        
+        <div>
+            <p id="resposta"></p>
+        </div>
     </div>
 
     <script src="./script.js"></script>
