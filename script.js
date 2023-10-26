@@ -1,4 +1,5 @@
 const process = require('process');
+require('dotenv').config();
 
 const openaiApiKey = process.env.OPENAI_API_KEY
 const azureApiKey = process.env.AZURE_API_KEY
