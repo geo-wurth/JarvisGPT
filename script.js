@@ -113,7 +113,7 @@ const PerguntaJarvis = async (pergunta) => {
     
     let header = {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + openaiApiKey
+        'Authorization': `Bearer ${openaiApiKey}`
     }
 
     let body = {
