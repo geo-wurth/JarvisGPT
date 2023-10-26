@@ -1,4 +1,5 @@
-
+const openaiApiKey = process.env.OPENAI_API_KEY
+const azureApiKey = process.env.AZURE_API_KEY
 
 // Caputrar a fala do usuário
 const CaputrarFala = () => {
@@ -112,7 +113,7 @@ const PerguntaJarvis = async (pergunta) => {
     
     let header = {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' 
+        'Authorization': 'Bearer ' + openaiApiKey
     }
 
     let body = {
@@ -127,7 +128,7 @@ const PerguntaJarvis = async (pergunta) => {
                 "content": pergunta
             }
         ],
-        "temperature": 0.7,
+        "temperature": 0,
         "n": 1
     }
 
@@ -156,7 +157,7 @@ const PerguntaJarvis = async (pergunta) => {
 const FalarComoJarvis = (resposta) => {
     let endpoint = "https://brazilsouth.tts.speech.microsoft.com/cognitiveservices/v1"
     let header = {
-        "Ocp-Apim-Subscription-Key": "",
+        "Ocp-Apim-Subscription-Key": azureApiKey,
         "Content-Type": "application/ssml+xml",
         "X-Microsoft-OutputFormat": "audio-16khz-128kbitrate-mono-mp3",
     }
@@ -210,6 +211,31 @@ const TrocaTema = (elemento) => {
     icon.classList.toggle("fa-sun");
 }
 
-CapturaTema();
+const STTAzure = () => {
+    let endpoint = "https://brazilsouth.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1?language=pt-BR&format=detailed"
+
+    let header = {
+        "Ocp-Apim-Subscription-Key": azureApiKey,
+        "Content-Type": "audio/wav"
+    };
+
+    var raw = "arquivo.wav";
+
+    let options = {
+        method: 'POST',
+        headers: header,
+        body: raw,
+        redirect: 'follow'
+    };
+
+    fetch(endpoint, options)
+    .then(response => response.text())
+    .then(result => console.log(result.DisplayText))
+    .catch(error => console.log('error', error));
+}
+
 // CaputrarFala();
 AtivarJarvis();
+
+CapturaTema();
+// STTAzure();
