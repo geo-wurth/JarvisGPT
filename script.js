@@ -85,12 +85,8 @@ const AtivarJarvis = () => {
 
             array_pergunta = array_pergunta.trim();
 
-            array_pergunta[0] = array_pergunta[0].toUpperCase();
-
-            console.log(array_pergunta);
-
-            array_pergunta = array_pergunta.trim();
-
+            array_pergunta = array_pergunta.replace(array_pergunta[0], array_pergunta[0].toUpperCase())
+            
             input.value = array_pergunta;
             PerguntaJarvis(array_pergunta);
 
