@@ -1,7 +1,4 @@
-require('dotenv').config();
-
-const openaiApiKey = process.env.OPENAI_API_KEY
-const azureApiKey = process.env.AZURE_API_KEY
+import { OPENAI_API_KEY, AZURE_API_KEY } from './config.js'
 
 // Caputrar a fala do usuário
 const CaputrarFala = () => {
@@ -115,7 +112,7 @@ const PerguntaJarvis = async (pergunta) => {
     
     let header = {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${openaiApiKey}`
+        'Authorization': `Bearer ${OPENAI_API_KEY}`
     }
 
     let body = {
@@ -159,7 +156,7 @@ const PerguntaJarvis = async (pergunta) => {
 const FalarComoJarvis = (resposta) => {
     let endpoint = "https://brazilsouth.tts.speech.microsoft.com/cognitiveservices/v1"
     let header = {
-        "Ocp-Apim-Subscription-Key": azureApiKey,
+        "Ocp-Apim-Subscription-Key": AZURE_API_KEY,
         "Content-Type": "application/ssml+xml",
         "X-Microsoft-OutputFormat": "audio-16khz-128kbitrate-mono-mp3",
     }
@@ -217,7 +214,7 @@ const STTAzure = () => {
     let endpoint = "https://brazilsouth.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1?language=pt-BR&format=detailed"
 
     let header = {
-        "Ocp-Apim-Subscription-Key": azureApiKey,
+        "Ocp-Apim-Subscription-Key": AZURE_API_KEY,
         "Content-Type": "audio/wav"
     };
 
