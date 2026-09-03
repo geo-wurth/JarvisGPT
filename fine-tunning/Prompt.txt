@@ -1,0 +1,215 @@
+Você é um desenvolvedor especializado em web scraping e transformação de dados. Seu objetivo é extrair perguntas e respostas de um arquivo HTML de FAQ e convertê-las para o formato JSONL, estruturado especificamente para treinamento de chatbots.
+
+**Estrutura do HTML que você receberá:**
+- Um div com classe `"página-texto"` contendo 3 seções de FAQ
+- Três divs principais com ids: `"Perguntas"`, `"PerguntasTrabalhar"` e `"PerguntasEmpresas"`
+- Dentro de cada seção, múltiplos elementos com classe `"panel panel-default panel-pergunta"`
+- Cada painel contém:
+  - Uma div com id `"p1"`, `"p2"`, `"p3"` etc. (contém a pergunta em uma tag `<button>`)
+  - Uma div com id `"pergunta1"`, `"pergunta2"`, `"pergunta3"` etc. (contém a resposta em um ou mais elementos `<p>`)
+
+**Seu trabalho:**
+Extraia as perguntas e respostas do HTML fornecido e converta cada par para o seguinte formato JSONL:
+
+```
+{"messages": [{"role": "system", "content": "Jarvis é um chatbot pontual e muito simpático que ajuda as pessoas"}, {"role": "user", "content": "<PERGUNTA DO FAQ>"}, {"role": "assistant", "content": "<RESPOSTA DO FAQ>"}]}
+```
+
+**Instruções importantes:**
+- Processe **5 perguntas por vez** para não ultrapassar o limite de tokens
+- Extraia o texto da pergunta da tag `<button>` dentro de cada div `p[número]`
+- Extraia o texto da resposta concatenando o conteúdo de todos os elementos `<p>` dentro da div `pergunta[número]` correspondente
+- Mantenha a formatação e a pontuação originais das respostas
+- Cada linha do output deve ser um objeto JSON completo (formato JSONL)
+- Processe as seções na ordem: `Perguntas`, depois `PerguntasTrabalhar`, depois `PerguntasEmpresas`
+
+Você está pronto para começar? Abaixo segue o código HTML:
+
+<div class="pagina-texto"><div></div>
+                            <p style="text-align: center"><strong>CURSOS SENAI SP</strong></p>
+<div id="Perguntas">
+<div class="panel panel-default panel-pergunta">
+<div id="p1" class="card-header"><button class="btn btn-link" style="color: rgba(18, 18, 18, 1)" data-toggle="collapse" data-target="#pergunta1" aria-expanded="true" aria-controls="pergunta1">QUAIS SÃO OS CURSOS OFERECIDOS PELO SENAI EM SÃO PAULO?</button></div>
+<div id="pergunta1" class="collapse show" data-parent="#Perguntas" style="">
+<div class="card-body ">
+<p class="mr-3 p-1 pl-2">O SENAI-SP oferece Cursos Técnicos, Cursos de Aprendizagem Industrial para empresas e para a comunidade, Cursos Técnicos Semipresenciais, cursos livres, graduações e pós-graduações em 28 áreas da indústria brasileira.</p>
+<p class="mr-3 p-1 pl-2">Acesse o site <a href="http://www.sp.senai.br" target="_blank" rel="noopener">sp.senai.br</a> e navegue por todos os títulos entre os setores de Administração e Gestão; Alimentos e Bebidas; Construção Civil e Design de Mobiliário; Design de Moda, Têxtil, Vestuário, Calçados e Joalheira; Design Gráfico, Papel, Celulose, Gráfica e Editorial; Fabricação Mecânica e Manutenção Industrial; Logística e Transporte; Mecânica Automotiva; Mecatrônica, Sistemas de Automação, Energia e Eletrônica; Meio Ambiente, Saúde e Segurança do Trabalho; Metalurgia e Soldagem; Química, Cerâmica e Plásticos; Refrigeração e Climatização; e Tecnologia da Informação e Informática.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default panel-pergunta">
+<div id="p2" class="card-header"><button class="btn btn-link" style="color: rgba(18, 18, 18, 1)" data-toggle="collapse" data-target="#pergunta2" aria-expanded="true" aria-controls="pergunta2">COMO FAZER CURSO NO SENAI SP?</button></div>
+<div id="pergunta2" class="collapse" data-parent="#Perguntas">
+<div class="card-body ">
+<p class="mr-3 p-1 pl-2">Depende de qual curso você deseja realizar. Para os cursos livres, as inscrições acontecem de forma online ou presencialmente nas escolas. Para realizar os Cursos Técnicos e de Aprendizagem Industrial, é preciso participar de processo seletivo, que normalmente acontece duas vezes por ano e pode ser acompanhado através do nosso site: <a href="https://www.sp.senai.br/" target="_blank" rel="noopener">sp.senai.br</a>. Já para saber sobre as turmas de graduação e pós-graduação, acesse <a href="https://faculdades.sp.senai.br" target="_blank" rel="noopener">faculdades.sp.senai.br</a>. Também temos cursos gratuitos online, que podem ser realizados ao longo de todo o ano, no link <a href="https://online.sp.senai.br" target="_blank" rel="noopener">online.sp.senai.br</a>.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default panel-pergunta">
+<div id="p3" class="card-header"><button class="btn btn-link" style="color: rgba(18, 18, 18, 1)" data-toggle="collapse" data-target="#pergunta3" aria-expanded="true" aria-controls="pergunta3">SENAI É GRATUITO OU OFERECE BOLSA DE ESTUDOS?</button></div>
+<div id="pergunta3" class="collapse" data-parent="#Perguntas">
+<div class="card-body ">
+<p class="mr-3 p-1 pl-2">O SENAI-SP oferece Cursos Técnicos e de Aprendizagem Industrial, sempre gratuitos. Já a gratuidade dos Cursos Livres é variável. Acesse as opções disponíveis: <a href="https://www.sp.senai.br/cursos/0/0?gratuito=1" target="_blank" rel="noopener">cursos gratuitos</a>.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default panel-pergunta">
+<div id="p4" class="card-header"><button class="btn btn-link" style="color: rgba(18, 18, 18, 1)" data-toggle="collapse" data-target="#pergunta4" aria-expanded="true" aria-controls="pergunta4">QUANTO CUSTA UM CURSO NO SENAI?</button></div>
+<div id="pergunta4" class="collapse" data-parent="#Perguntas">
+<div class="card-body ">
+<p class="mr-3 p-1 pl-2">Todos os Cursos Técnicos presenciais e de Aprendizagem Industrial do SENAI-SP são gratuitos. Você também encontra uma lista de cursos livres gratuitos em <a href="https://sp.senai.br/cursos/cursos-livres/0?gratuito=1" target="_blank" rel="noopener">nosso site</a>. Para os cursos de graduação e pós-graduação, consulte valores em <a href="https://faculdades.sp.senai.br" target="_blank" rel="noopener">faculdades.sp.senai.br</a>.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default panel-pergunta">
+<div id="p5" class="card-header"><button class="btn btn-link" style="color: rgba(18, 18, 18, 1)" data-toggle="collapse" data-target="#pergunta5" aria-expanded="true" aria-controls="pergunta5">O QUE SÃO CURSOS TÉCNICOS E QUEM PODE FAZER?</button></div>
+<div id="pergunta5" class="collapse" data-parent="#Perguntas">
+<div class="card-body ">
+<p class="mr-3 p-1 pl-2">Os Cursos Técnicos são cursos desenvolvidos para a capacitação teórica e prática de alunos para trabalhar nas mais diversas áreas tecnológicas do ramo industrial. Para fazer os Cursos Técnicos oferecidos pelo SENAI-SP nos períodos da manhã, tarde e noite, é necessário que a pessoa interessada conclua a 1ª série do Ensino Médio até a data de início das aulas. Para os cursos oferecidos no turno da noite, é necessário ter o Ensino Médio completo até o início das aulas.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default panel-pergunta">
+<div id="p6" class="card-header"><button class="btn btn-link" style="color: rgba(18, 18, 18, 1)" data-toggle="collapse" data-target="#pergunta6" aria-expanded="true" aria-controls="pergunta6">O QUE SÃO CURSOS TECNÓLOGOS E QUEM PODE FAZER?</button></div>
+<div id="pergunta6" class="collapse" data-parent="#Perguntas">
+<div class="card-body ">
+<p class="mr-3 p-1 pl-2">São cursos superiores de Tecnologia - correspondentes à graduação - e voltados para alunos que tenham o Ensino Médio completo. Ao concluir o curso, o aluno recebe o diploma de tecnólogo, válido e reconhecido como curso superior.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default panel-pergunta">
+<div id="p7" class="card-header"><button class="btn btn-link" style="color: rgba(18, 18, 18, 1)" data-toggle="collapse" data-target="#pergunta7" aria-expanded="true" aria-controls="pergunta7">QUAL A DIFERENÇA ENTRE CURSO TÉCNICO E TECNÓLOGO?</button></div>
+<div id="pergunta7" class="collapse" data-parent="#Perguntas">
+<div class="card-body ">
+<p class="mr-3 p-1 pl-2">A diferença entre Curso Técnico e Tecnólogo está principalmente no nível de formação.</p>
+<p class="mr-3 p-1 pl-2">O Curso Técnico é de nível médio, tem formação de até dois anos, pode ser realizado por alunos ainda no Ensino Médio e é voltado para a inserção no mercado de trabalho. Já o Curso Tecnólogo é um curso de graduação de nível superior, tem duração entre dois e três anos e precisa ser realizado após formação no Ensino Médio. Normalmente, é voltado para profissionais que desejam progredir na carreira.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default panel-pergunta">
+<div id="p8" class="card-header"><button class="btn btn-link" style="color: rgba(18, 18, 18, 1)" data-toggle="collapse" data-target="#pergunta8" aria-expanded="true" aria-controls="pergunta8">O QUE SÃO CURSOS DE APRENDIZAGEM INDUSTRIAL E QUEM PODE FAZER?</button></div>
+<div id="pergunta8" class="collapse" data-parent="#Perguntas">
+<div class="card-body ">
+<p class="mr-3 p-1 pl-2">Os cursos de Aprendizagem Industrial qualificam profissionais para atuarem em áreas do setor industrial como administração, alimentos, mecânica, automação, metalurgia, automobilística, construção civil, refrigeração, calçados, transporte e outras.</p>
+<p class="mr-3 p-1 pl-2">São oferecidos para jovens a partir de 14 anos e, no máximo, idade que lhes permita concluir o curso antes de completarem 24 anos. A seleção ocorre, primeiramente, para candidatos encaminhados formalmente por empresas contribuintes do SENAI-SP. Havendo vagas remanescentes, ocorre o processo seletivo complementar para candidatos da comunidade.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default panel-pergunta">
+<div id="p9" class="card-header"><button class="btn btn-link" style="color: rgba(18, 18, 18, 1)" data-toggle="collapse" data-target="#pergunta9" aria-expanded="true" aria-controls="pergunta9">CURSOS TÉCNICOS SEMIPRESENCIAIS SENAI: COMO FUNCIONAM?</button></div>
+<div id="pergunta9" class="collapse" data-parent="#Perguntas">
+<div class="card-body ">
+<p class="mr-3 p-1 pl-2">Da carga horária total dos cursos semipresenciais, 80% é realizada a distância, no ambiente virtual de aprendizagem do SENAI-SP, e 20% é realizada presencialmente, na escola escolhida pelo aluno no ato da matrícula, de acordo com horário e datas disponíveis.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default panel-pergunta">
+<div id="p10" class="card-header"><button class="btn btn-link" style="color: rgba(18, 18, 18, 1)" data-toggle="collapse" data-target="#pergunta10" aria-expanded="true" aria-controls="pergunta10">EXISTE CURSO ONLINE GRATUITO NO SENAI?</button></div>
+<div id="pergunta10" class="collapse" data-parent="#Perguntas">
+<div class="card-body ">
+<p class="mr-3 p-1 pl-2">Sim. Os cursos online do SENAI-SP oferecem a possibilidade de formação profissional sem a necessidade de se dirigir a uma escola ou espaço físico.</p>
+<p class="mr-3 p-1 pl-2">Essa modalidade de ensino respeita o ritmo de aprendizagem de cada um e proporciona maior liberdade na organização dos horários de estudo. Todas as informações, inscrições e programações dos cursos estão disponíveis em <a href="https://online.sp.senai.br" target="_blank" rel="noopener">online.sp.senai.br</a>.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default panel-pergunta">
+<div id="p11" class="card-header"><button class="btn btn-link" style="color: rgba(18, 18, 18, 1)" data-toggle="collapse" data-target="#pergunta11" aria-expanded="true" aria-controls="pergunta11">ONDE TEM SENAI EM SÃO PAULO?</button></div>
+<div id="pergunta11" class="collapse" data-parent="#Perguntas">
+<div class="card-body ">
+<p class="mr-3 p-1 pl-2">O SENAI tem 90 escolas distribuídas pelo estado de São Paulo, além de 78 escolas móveis que atendem regiões onde não há unidades fixas. Você encontra todos os endereços, contatos e sites oficiais de cada escola em <a href="http://www.sp.senai.br/unidades" target="_blank" rel="noopener">sp.senai.br/unidades</a>.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default panel-pergunta">
+<div id="p12" class="card-header"><button class="btn btn-link" style="color: rgba(18, 18, 18, 1)" data-toggle="collapse" data-target="#pergunta12" aria-expanded="true" aria-controls="pergunta12">OS CURSOS OFERECIDOS NAS ESCOLAS DO SENAI-SP SÃO OS MESMOS EM TODAS AS UNIDADES?</button></div>
+<div id="pergunta12" class="collapse" data-parent="#Perguntas">
+<div class="card-body ">
+<p class="mr-3 p-1 pl-2">Não. As unidades podem oferecer cursos em diferentes modalidades e áreas tecnológicas. Para conhecer os cursos ofertados em cada localidade, acesse <a href="http://www.sp.senai.br/unidades" target="_blank" rel="noopener">sp.senai.br/unidades</a> e entre em contato com a unidade desejada.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default panel-pergunta">
+<div id="p13" class="card-header"><button class="btn btn-link" style="color: rgba(18, 18, 18, 1)" data-toggle="collapse" data-target="#pergunta13" aria-expanded="true" aria-controls="pergunta13">CURSO DO SENAI É RECONHECIDO PELO MEC?</button></div>
+<div id="pergunta13" class="collapse" data-parent="#Perguntas">
+<div class="card-body ">
+<p class="mr-3 p-1 pl-2">Sim, todos os cursos superiores do SENAI-SP passam por um processo de reconhecimento pelo Ministério da Educação, através da Portaria MEC 1005/2014. As informações ficam disponíveis na consulta pública do MEC, no link <a href="https://emec.mec.gov.br/" target="_blank" rel="noopener">emec.mec.gov.br</a>.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default panel-pergunta">
+<div id="p14" class="card-header"><button class="btn btn-link" style="color: rgba(18, 18, 18, 1)" data-toggle="collapse" data-target="#pergunta14" aria-expanded="true" aria-controls="pergunta14">QUEM ESTÁ NO ENSINO MÉDIO DO SESI TEM VAGA GARANTIDA NO SENAI?</button></div>
+<div id="pergunta14" class="collapse" data-parent="#Perguntas">
+<div class="card-body ">
+<p class="mr-3 p-1 pl-2">Não, apenas estudantes do Novo Ensino Médio do SESI em São Paulo terão também a oportunidade de estudar no SENAI-SP. A partir do 2º ano, os estudantes podem escolher entre os Itinerários Formativos ofertados para complementar sua formação básica. Os estudantes que optarem pelo Itinerário de Formação Técnica e Profissional estudarão de forma integrada no SESI e no SENAI.</p>
+</div>
+</div>
+</div>
+</div>
+<p>&nbsp;</p>
+<p style="text-align: center"><strong>TRABALHAR NO SENAI-SP</strong></p>
+<div id="PerguntasTrabalhar">
+<div class="panel panel-default panel-pergunta">
+<div id="p15" class="card-header"><button class="btn btn-link" style="color: rgba(18, 18, 18, 1)" data-toggle="collapse" data-target="#pergunta15" aria-expanded="true" aria-controls="pergunta15">COMO TRABALHAR NO SENAI-SP?</button></div>
+<div id="pergunta15" class="collapse" data-parent="#PerguntasTrabalhar">
+<div class="card-body ">
+<p class="mr-3 p-1 pl-2">Os processos seletivos do SENAI-SP são divulgados na plataforma <a href="https://sesisenaisp.empregare.com/pt-br/vagas" target="_blank" rel="noopener">sesisenaisp.empregare.com</a>. Não aceitamos currículos enviados por e-mail.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default panel-pergunta">
+<div id="p16" class="card-header"><button class="btn btn-link" style="color: rgba(18, 18, 18, 1)" data-toggle="collapse" data-target="#pergunta16" aria-expanded="true" aria-controls="pergunta16">POR QUE TRABALHAR NO SENAI?</button></div>
+<div id="pergunta16" class="collapse" data-parent="#PerguntasTrabalhar">
+<div class="card-body ">
+<p class="mr-3 p-1 pl-2">No SENAI-SP, trabalhamos para garantir que as indústrias acompanhem a constante inovação tecnológica. Oferecemos às empresas mão de obra especializada, com conhecimento técnico e experiência prática, levando mais eficiência e competitividade para a indústria paulista.</p>
+<p class="mr-3 p-1 pl-2">Nossos benefícios são: assistência médica, seguro de vida, vale-transporte, vale-refeição ou alimentação (conforme carga horária), auxílio-creche e acesso à Universidade Corporativa/Unindústria – um canal com cursos gratuitos voltados para o desenvolvimento de colaboradores.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default panel-pergunta">
+<div id="p17" class="card-header"><button class="btn btn-link" style="color: rgba(18, 18, 18, 1)" data-toggle="collapse" data-target="#pergunta17" aria-expanded="true" aria-controls="pergunta17">O SENAI OFERECE PROGRAMA DE TRAINEE?</button></div>
+<div id="pergunta17" class="collapse" data-parent="#PerguntasTrabalhar">
+<div class="card-body ">
+<p class="mr-3 p-1 pl-2">Sim, oferecemos programas de Trainee, no entanto não existe uma regularidade para ocorrer. Sempre que estão abertos, os programas são divulgados na plataforma <a href="https://sesisenaisp.empregare.com/pt-br/vagas" target="_blank" rel="noopener">sesisenaisp.empregare.com</a>, onde os interessados podem se inscrever para participar do processo seletivo.</p>
+</div>
+</div>
+</div>
+</div>
+<p>&nbsp;</p>
+<p style="text-align: center"><strong>SENAI PARA EMPRESAS</strong></p>
+<div id="PerguntasEmpresas">
+<div class="panel panel-default panel-pergunta">
+<div id="p18" class="card-header"><button class="btn btn-link" style="color: rgba(18, 18, 18, 1)" data-toggle="collapse" data-target="#pergunta18" aria-expanded="true" aria-controls="pergunta18">QUAIS SERVIÇOS O SENAI OFERECE PARA AS EMPRESAS?</button></div>
+<div id="pergunta18" class="collapse" data-parent="#PerguntasEmpresas">
+<div class="card-body ">
+<p class="mr-3 p-1 pl-2">O SENAI-SP leva <a href="https://www.sp.senai.br/para-a-sua-empresa/institutos-inovacao-tecnologia" target="_blank" rel="noopener">inovação em&nbsp;soluções tecnológicas</a>&nbsp;para a indústria a partir de 40 Núcleos de Tecnologia, 11 Institutos SENAI de Tecnologia (IST) e três Institutos SENAI de Inovação (ISI). Atuamos na elaboração e execução de projetos de pesquisa aplicada e desenvolvimento de novos produtos e processos; assessorias em processos produtivos; design de produtos; empreendedorismo industrial; serviços metrológicos e serviços especializados.</p>
+<p class="mr-3 p-1 pl-2">Os <a href="https://www.sp.senai.br/para-a-sua-empresa/laboratorios" target="_blank" rel="noopener">laboratórios</a> possuem infraestrutura de ponta em diversos segmentos industriais, como alimentos, construção civil, eletrônica e automação, energia, metalmecânica, biotecnologia e muito mais. As equipes são multidisciplinares e dedicadas às diversas linhas de serviços, sendo compostas por engenheiros e pesquisadores que trabalham juntos e de forma integrada para oferecer soluções completas às mais diversas necessidades das empresas.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default panel-pergunta">
+<div id="p19" class="card-header"><button class="btn btn-link" style="color: rgba(18, 18, 18, 1)" data-toggle="collapse" data-target="#pergunta19" aria-expanded="true" aria-controls="pergunta19">COMO FUNCIONA A PARCERIA COM O SENAI?</button></div>
+<div id="pergunta19" class="collapse" data-parent="#PerguntasEmpresas">
+<div class="card-body ">
+<p class="mr-3 p-1 pl-2">O SENAI-SP já consolidou mais de 160 parcerias em diversas áreas tecnológicas, contemplando mais de 38 mil bens distribuídos pela rede no estado de São Paulo. Através do programa <a href="https://sp.senai.br/para-a-sua-empresa/mais-parceiros" target="_blank" rel="noopener">Mais Parceiros</a>, as empresas podem fazer parcerias com unidades do SENAI-SP e disseminar seus produtos e serviços pelo estado. Entre os benefícios, estão: desenvolvimento de capital humano, atendimento às novas demandas da indústria, antecipação de tendências tecnológicas, troca de experiências e conhecimento, maior valor agregado para a marca, modernização de processos mediante ao uso de produtos, serviços e conhecimentos difundidos no mercado.</p>
+<p class="mr-3 p-1 pl-2">As empresas com interesse em se tornar parceiras do SENAI São Paulo podem registrar interesse preenchendo o <a href="https://sp.senai.br/para-a-sua-empresa/mais-parceiros#comofazerparte" target="_blank" rel="noopener">formulário</a>.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default panel-pergunta">
+<div id="p20" class="card-header"><button class="btn btn-link" style="color: rgba(18, 18, 18, 1)" data-toggle="collapse" data-target="#pergunta20" aria-expanded="true" aria-controls="pergunta20">O QUE É A JORNADA DE TRANSFORMAÇÃO DIGITAL?</button></div>
+<div id="pergunta20" class="collapse" data-parent="#PerguntasEmpresas">
+<div class="card-body ">
+<p class="mr-3 p-1 pl-2">A Jornada de Transformação Digital é um programa criado em conjunto entre FIESP, CIESP, SENAI-SP e SEBRAE-SP para atender micro, pequenas e médias indústrias em oito etapas de consultoria e treinamento. Através das consultorias do SENAI-SP, a Jornada busca aumentar a produtividade de indústrias em diferentes níveis de maturidade digital, sendo gratuita para aquelas com faturamento até R$ 8 milhões por ano. As indústrias interessadas podem inscrever-se através do site <a href="https://jornadadigital.sp.senai.br" target="_blank" rel="noopener">jornadadigital.sp.senai.br</a>.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default panel-pergunta">
+<div id="p21" class="card-header"><button class="btn btn-link" style="color: rgba(18, 18, 18, 1)" data-toggle="collapse" data-target="#pergunta21" aria-expanded="true" aria-controls="pergunta21">O QUE É A JORNADA DE DESCARBONIZAÇÃO?</button></div>
+<div id="pergunta21" class="collapse" data-parent="#PerguntasEmpresas">
+<div class="card-body ">
+<p class="mr-3 p-1 pl-2">A Jornada de Descarbonização é um programa da FIESP, do SENAI-SP e SEBRAE-SP, criado para apoiar as indústrias paulistas na transição para um futuro mais sustentável e competitivo. Ao participarem do programa, micros, pequenos e médios estabelecimentos industriais passam por seis etapas de consultoria gratuita, focada na redução de emissões de Gases de Efeito Estufa (GEE), além de capacitações e acesso à ferramenta para realizar o Inventário de Emissões de GEE de forma autônoma. As indústrias interessadas podem inscrever-se através do site <a href="https://jornadadescarbonizacao.sp.senai.br/" target="_blank" rel="noopener">jornadadescarbonizacao.sp.senai.br</a>.</p>
+</div>
+</div>
+</div>
+</div>
+                        </div>

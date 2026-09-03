@@ -1,4 +1,24 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+    /* Variáveis do SENAI e Tema Claro */
+    --senai-red: #dd203c;
+    --senai-red-hover: #94051b;
+    --bg-color: #f3f4f6;
+    --text-color: #1f2937;
+    --input-bg: #ffffff;
+    --input-border: #e5e7eb;
+    --text-muted: #6b7280;
+}
+
+body.dark-mode {
+    /* Tema Escuro */
+    --bg-color: #1e1e1e;
+    --text-color: #f9fafb;
+    --input-bg: #2d2d2d;
+    --input-border: #404040;
+    --text-muted: #a1a1aa;
+}
 
 * {
     margin: 0;
@@ -8,90 +28,199 @@
 
 body {
     font-family: 'Inter', sans-serif;
-    background-color: white;
-    color: #272727;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.4s ease, color 0.4s ease;
+    -webkit-font-smoothing: antialiased;
 }
 
-h1 {
-    text-transform: uppercase;
-}
-
-.sideBar {
+main {
+    display: flex;
+    width: 100vw;
     height: 100vh;
+    overflow: hidden;
+}
+
+.sidebar {
     width: 60px;
-    background-color: #DD203C;
-    position: absolute;
-    left: 0;
+    background-color: var(--senai-red);
+    flex-shrink: 0;
+    z-index: 10;
 }
 
-button.theme {
-    padding: 12px 13px;
-    border-radius: 50%;
-    border: none;
-    background-color: #272727;
-    color: white;
-    position: absolute;
-    right: 50px;
-    top: 20px;
-    cursor: pointer;
-}
-
-.container {
+.chat {
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    height: 100vh;
+    justify-content: center;
+    transition: all 0.4s ease;
+    overflow: hidden;
 }
 
-.container div {
-    margin: 60px 0;
+.logo-img {
+    width: clamp(60px, 8vw, 90px);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 
-button#microfone {
-    padding: 12px 15px;
-    border-radius: 50%;
-    border: none;
-    background-color: #DD203C;
+.title-text {
+    font-size: clamp(2rem, 5vw, 4.5rem);
+    letter-spacing: -1.5px;
+    margin-bottom: 5vh !important;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.senai-footer-logo {
+    width: 120px;
+    z-index: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+
+/* Área da Pergunta */
+.pergunta {
+    margin: 5vh 0;
+    max-width: 850px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 5;
+}
+
+/* Quando entra no modo chat, JS adiciona a classe pequena */
+.pergunta.pequena {
+    margin: 2vh 0 !important;
+}
+
+/* Input Container */
+.input-container {
+    background-color: var(--input-bg);
+    border: 1px solid var(--input-border);
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+.input-container:focus-within {
+    border-color: var(--senai-red);
+    box-shadow: 0 0 0 4px rgba(221, 32, 60, 0.15) !important;
+}
+
+#prompt {
+    font-size: 1.1rem;
+    color: var(--text-color);
+}
+
+#prompt::placeholder {
+    color: var(--text-muted);
+}
+
+#prompt:disabled {
+    opacity: 0.5;
+}
+
+/* Botões Customizados */
+.btn-custom {
+    background-color: var(--senai-red);
     color: white;
+    width: 44px;
+    height: 44px;
+    border: none;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-custom:hover {
+    background-color: var(--senai-red-hover);
+    color: white;
+    transform: scale(1.08);
+}
+
+.btn-custom:active {
+    transform: scale(0.95);
+}
+
+.btn-custom:disabled {
+    background-color: #9ca3af;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Toggle Modo Escuro */
+#toggle-mode {
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    border: 1px solid var(--input-border);
+    width: 45px;
+    height: 45px;
+    z-index: 10;
+    transition: all 0.3s ease;
+}
+
+#toggle-mode:hover {
+    background-color: var(--input-border);
+    transform: rotate(15deg);
+}
+
+/* Seletor de IA (Segmented Control) */
+.provider-selector {
+    background-color: var(--input-bg);
+    border: 1px solid var(--input-border);
+    display: inline-flex;
+    gap: 4px;
+}
+
+.provider-option {
+    flex: 1;
+}
+
+.provider-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 24px;
+    border-radius: 50rem;
     cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    user-select: none;
 }
 
-button.active {
-    background-color: #791927 !important;
-    color: gray !important;
+/* Estado Ativo (Checkbox Checked) */
+.form-check-input:checked + .provider-label {
+    background-color: var(--senai-red);
+    color: white;
+    box-shadow: 0 2px 6px rgba(221, 32, 60, 0.3);
 }
 
-input {
-    min-width: 300px;
-    padding: 12px 15px;
-    border: none;
-    border-bottom: 1px solid #272727;
-    color: #272727;
-    background-color: white;
+.provider-label:hover {
+    color: var(--text-color);
 }
 
-input:focus {
-    outline: none;
-}
-
-#resposta {
-    font-size: larger;
-    font-weight: bold;
-    margin: 0 100px;
-}
-
-.dark {
-    background-color: #272727;
+.form-check-input:checked + .provider-label:hover {
     color: white;
 }
 
-input.dark {
-    border-bottom: 1px solid white;
+/* Área de Resposta (quando ativa) */
+.resposta {
+    display: none; /* Controlado via JS */
+    max-width: 900px;
+    padding-bottom: 20px;
+    z-index: 1;
 }
 
-button.dark {
-    background-color: white;
-    color: #272727;
+/* Responsividade Base */
+@media (max-width: 768px) {
+    .btn-custom {
+        width: 40px;
+        height: 40px;
+    }
+    .input-container {
+        padding: 4px !important;
+    }
+    #prompt {
+        font-size: 1rem;
+    }
+    .pergunta {
+        margin: 3vh 0;
+    }
 }
-
